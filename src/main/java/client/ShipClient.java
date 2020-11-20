@@ -1,3 +1,6 @@
+package client;
+
+import entities.Ship;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.IOException;
@@ -7,12 +10,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.*;
 
-// Not a controller?
-public class ShipController {
+
+public class ShipClient {
     String nextPage = "http://swapi.dev/api/starships/";
     List<Ship> ships;
 
-    public ShipController(List<Ship> ships) throws IOException, InterruptedException {
+    public ShipClient(List<Ship> ships) throws IOException, InterruptedException {
         this.ships = ships;
         while (nextPage != null) {
             JSONArray shipArray = getHttpRequest();
@@ -25,6 +28,7 @@ public class ShipController {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(this.nextPage))
                 .header("Content-Type", "application/json")
+                .GET()
                 .build();
         HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
         return parseResponse(response);
@@ -33,7 +37,6 @@ public class ShipController {
     private JSONArray parseResponse(HttpResponse response) {
         JSONObject shipsObject = new JSONObject(response.body().toString());
         this.nextPage = shipsObject.isNull("next") ? null : shipsObject.getString("next");
-        System.out.println(shipsObject);
         return shipsObject.getJSONArray("results");
     }
 

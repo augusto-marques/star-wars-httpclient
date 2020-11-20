@@ -1,3 +1,7 @@
+package view;
+
+import entities.Ship;
+
 import java.util.Scanner;
 
 public class TravelInterface {
@@ -8,8 +12,8 @@ public class TravelInterface {
     }
 
     public void displayResults(Ship ship) {
-        System.out.println(ship.name);
-        System.out.println(ship.stops);
+        System.out.println(ship.getName());
+        System.out.println(ship.getStops());
         System.out.println();
     }
 }
